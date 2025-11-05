@@ -1,63 +1,58 @@
 import { useLocation } from "react-router-dom";
 import {
-  LayoutDashboard,
-  Headphones,
-  Package,
+  BookOpen,
+  CheckCircle,
+  Search,
   Settings,
-  Wifi,
-  FileText,
-  BarChart3,
-  Bell,
-  Shield,
+  ChevronLeft,
+  User,
+  LogOut,
 } from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
   SidebarGroup,
   SidebarGroupContent,
-  SidebarGroupLabel,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  SidebarHeader,
+  SidebarFooter,
+  SidebarSeparator,
   useSidebar,
 } from "@/components/ui/sidebar";
+import { Button } from "@/components/ui/button";
 
 const menuItems = [
-  { title: "Dashboard", url: "/", icon: LayoutDashboard },
-  { title: "Support Center", url: "/support", icon: Headphones },
-  { title: "Inventory & Procurement", url: "/inventory", icon: Package },
-  { title: "System & Updates", url: "/system-updates", icon: Settings },
-  { title: "Network & Connectivity", url: "/network", icon: Wifi },
-  { title: "Access Control", url: "/access", icon: Shield },
-  { title: "Audit", url: "/audit", icon: FileText },
-  { title: "Reports & Analytics", url: "/reports", icon: BarChart3 },
-  { title: "Notifications", url: "/notifications", icon: Bell },
-  { title: "Admin Console", url: "/admin", icon: Settings },
+  { title: "Skills", url: "/skills", icon: BookOpen },
+  { title: "Approvals", url: "/approvals", icon: CheckCircle },
+  { title: "Skill Explorer", url: "/skill-explorer", icon: Search },
+  { title: "Admin", url: "/admin", icon: Settings },
 ];
 
 export function AppSidebar() {
-  const { state } = useSidebar();
+  const { state, toggleSidebar } = useSidebar();
   const location = useLocation();
 
   const isActive = (path: string) => {
-    if (path === "/") return location.pathname === "/";
-    return location.pathname.startsWith(path);
+    return location.pathname === path;
   };
 
   return (
     <Sidebar collapsible="icon">
-      <SidebarContent>
-        <div className="p-4 border-b border-sidebar-border">
-          <h1 className="text-xl font-bold text-sidebar-foreground group-data-[collapsible=icon]:hidden">
-            RealThingks IT
-          </h1>
-          <div className="text-xl font-bold text-sidebar-foreground text-center hidden group-data-[collapsible=icon]:block">
+      <SidebarHeader>
+        <div className="flex items-center gap-2 px-2 py-2">
+          <div className="flex h-8 w-8 items-center justify-center rounded-md bg-primary text-primary-foreground font-bold">
             RT
           </div>
+          <span className="text-lg font-semibold group-data-[collapsible=icon]:hidden">
+            RealThingx
+          </span>
         </div>
+      </SidebarHeader>
 
+      <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>Operations</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {menuItems.map((item) => {
@@ -81,6 +76,34 @@ export function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
+
+      <SidebarFooter>
+        <SidebarSeparator />
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <SidebarMenuButton onClick={toggleSidebar} tooltip="Collapse">
+              <ChevronLeft className="group-data-[collapsible=icon]:rotate-180 transition-transform" />
+              <span>Collapse</span>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+          <SidebarMenuItem>
+            <SidebarMenuButton asChild tooltip="Admin">
+              <a href="/profile">
+                <User />
+                <span>Admin</span>
+              </a>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+          <SidebarMenuItem>
+            <SidebarMenuButton asChild tooltip="Logout">
+              <a href="/logout">
+                <LogOut />
+                <span>Logout</span>
+              </a>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+        </SidebarMenu>
+      </SidebarFooter>
     </Sidebar>
   );
 }
