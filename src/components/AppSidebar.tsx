@@ -39,7 +39,6 @@ const menuItems = [
   { title: "Access Control", url: "/access", icon: Shield },
   { title: "Audit", url: "/audit", icon: FileText },
   { title: "Reports & Analytics", url: "/reports", icon: BarChart3 },
-  { title: "Notifications", url: "/notifications", icon: Bell },
   { title: "Admin Console", url: "/admin", icon: Settings },
 ];
 
