@@ -13,7 +13,15 @@ export function NotificationPanel() {
   } = useNotifications();
   return <Popover>
       <PopoverTrigger asChild>
-        
+        <Button variant="ghost" size="sm" className="w-full justify-start relative">
+          <Bell className="h-5 w-5" />
+          <span>Notifications</span>
+          {unreadCount > 0 && (
+            <Badge variant="destructive" className="ml-auto h-5 w-5 p-0 flex items-center justify-center text-xs">
+              {unreadCount}
+            </Badge>
+          )}
+        </Button>
       </PopoverTrigger>
       <PopoverContent className="w-80" align="end">
         <div className="flex items-center justify-between mb-4">

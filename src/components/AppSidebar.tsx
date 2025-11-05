@@ -93,7 +93,7 @@ export function AppSidebar() {
 
       <SidebarFooter>
         <SidebarSeparator />
-        <div className="flex items-center gap-2 px-2 pb-2">
+        <div className="space-y-1 px-2 pb-2">
           <NotificationPanel />
           <ThemeToggle />
         </div>

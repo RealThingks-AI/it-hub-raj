@@ -10,12 +10,13 @@ export function ThemeToggle() {
   };
 
   return (
-    <Button variant="ghost" size="icon" onClick={toggleTheme}>
+    <Button variant="ghost" size="sm" onClick={toggleTheme} className="w-full justify-start">
       {isDark ? (
         <Sun className="h-5 w-5" />
       ) : (
         <Moon className="h-5 w-5" />
       )}
+      <span>Theme</span>
     </Button>
   );
 }
