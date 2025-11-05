@@ -1,161 +1,56 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import { useAuth } from "@/hooks/useAuth";
-import SecurityEnhancedApp from "@/components/SecurityEnhancedApp";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { SidebarProvider } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/AppSidebar";
+import { DashboardHeader } from "@/components/DashboardHeader";
 import Dashboard from "./pages/Dashboard";
-import Contacts from "./pages/Contacts";
-import Leads from "./pages/Leads";
-import Meetings from "./pages/Meetings";
-import DealsPage from "./pages/DealsPage";
-import Settings from "./pages/Settings";
-import Auth from "./pages/Auth";
+import SupportCenter from "./pages/SupportCenter";
+import InventoryProcurement from "./pages/InventoryProcurement";
+import SystemUpdates from "./pages/SystemUpdates";
+import NetworkConnectivity from "./pages/NetworkConnectivity";
+import Access from "./pages/Access";
+import Audit from "./pages/Audit";
+import ReportsAnalytics from "./pages/ReportsAnalytics";
+import NotificationsApprovals from "./pages/NotificationsApprovals";
+import AdminConsole from "./pages/AdminConsole";
 import NotFound from "./pages/NotFound";
-import Notifications from "./pages/Notifications";
-import { useState } from "react";
 
 const queryClient = new QueryClient();
 
-// Layout Component for all pages with fixed sidebar
-const FixedSidebarLayout = ({ children }: { children: React.ReactNode }) => {
-  const [sidebarOpen, setSidebarOpen] = useState(false); // Start collapsed
-  
-  return (
-    <div className="min-h-screen flex w-full">
-      <div className="fixed top-0 left-0 z-50 h-full">
-        <AppSidebar isFixed={true} isOpen={sidebarOpen} onToggle={setSidebarOpen} />
-      </div>
-      <main 
-        className="flex-1 bg-background min-h-screen"
-        style={{ 
-          marginLeft: sidebarOpen ? '200px' : '64px',
-          transition: 'margin-left 300ms ease-in-out',
-          width: `calc(100vw - ${sidebarOpen ? '200px' : '64px'})`
-        }}
-      >
-        <div className="w-full h-full overflow-auto">
-          {children}
-        </div>
-      </main>
-    </div>
-  );
-};
-
-// Protected Route Component
-const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
-  const { user, loading } = useAuth();
-
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-background">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
-          <p className="text-muted-foreground">Loading...</p>
-        </div>
-      </div>
-    );
-  }
-
-  if (!user) {
-    return <Navigate to="/auth" replace />;
-  }
-
-  // Use FixedSidebarLayout for all protected routes
-  return (
-    <FixedSidebarLayout>
-      {children}
-    </FixedSidebarLayout>
-  );
-};
-
-// Auth Route Component (redirects if already authenticated)
-const AuthRoute = ({ children }: { children: React.ReactNode }) => {
-  const { user, loading } = useAuth();
-
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-background">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
-          <p className="text-muted-foreground">Loading...</p>
-        </div>
-      </div>
-    );
-  }
-
-  if (user) {
-    return <Navigate to="/" replace />;
-  }
-
-  return <>{children}</>;
-};
-
-// App Routes Component - now inside the BrowserRouter context
-const AppRoutes = () => (
-  <Routes>
-    <Route path="/auth" element={
-      <AuthRoute>
-        <Auth />
-      </AuthRoute>
-    } />
-    <Route path="/" element={
-      <ProtectedRoute>
-        <Dashboard />
-      </ProtectedRoute>
-    } />
-    <Route path="/contacts" element={
-      <ProtectedRoute>
-        <Contacts />
-      </ProtectedRoute>
-    } />
-    <Route path="/leads" element={
-      <ProtectedRoute>
-        <Leads />
-      </ProtectedRoute>
-    } />
-    <Route path="/meetings" element={
-      <ProtectedRoute>
-        <Meetings />
-      </ProtectedRoute>
-    } />
-    <Route path="/deals" element={
-      <ProtectedRoute>
-        <DealsPage />
-      </ProtectedRoute>
-    } />
-    <Route path="/notifications" element={
-      <ProtectedRoute>
-        <Notifications />
-      </ProtectedRoute>
-    } />
-    <Route path="/settings" element={
-      <ProtectedRoute>
-        <Settings />
-      </ProtectedRoute>
-    } />
-    <Route path="*" element={
-      <ProtectedRoute>
-        <NotFound />
-      </ProtectedRoute>
-    } />
-  </Routes>
-);
-
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <BrowserRouter>
-      <SecurityEnhancedApp>
-        <TooltipProvider>
-          <Toaster />
-          <Sonner />
-          <AppRoutes />
-        </TooltipProvider>
-      </SecurityEnhancedApp>
-    </BrowserRouter>
+    <TooltipProvider>
+      <Toaster />
+      <Sonner />
+      <BrowserRouter>
+        <SidebarProvider>
+          <div className="flex min-h-screen w-full">
+            <AppSidebar />
+            <div className="flex-1 flex flex-col">
+              <DashboardHeader />
+              <main className="flex-1 p-6 bg-gradient-subtle">
+                <Routes>
+                  <Route path="/" element={<Dashboard />} />
+                  <Route path="/support" element={<SupportCenter />} />
+                  <Route path="/inventory" element={<InventoryProcurement />} />
+                  <Route path="/system-updates" element={<SystemUpdates />} />
+                  <Route path="/network" element={<NetworkConnectivity />} />
+                  <Route path="/access" element={<Access />} />
+                  <Route path="/audit" element={<Audit />} />
+                  <Route path="/reports" element={<ReportsAnalytics />} />
+                  <Route path="/notifications" element={<NotificationsApprovals />} />
+                  <Route path="/admin" element={<AdminConsole />} />
+                  <Route path="*" element={<NotFound />} />
+                </Routes>
+              </main>
+            </div>
+          </div>
+        </SidebarProvider>
+      </BrowserRouter>
+    </TooltipProvider>
   </QueryClientProvider>
 );
 
